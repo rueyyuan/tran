@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>商品菜单</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    nav, .subnav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: #333;
+    }
+
+    nav button, .subnav button {
+      background: none;
+      border: none;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    nav button:hover, nav button.active,
+    .subnav button:hover, .subnav button.active {
+      background-color: #555;
+    }
+
+    .subnav {
+      display: none;
+      background-color: #444;
+    }
+
+    .menu-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .item {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .item:hover {
+      transform: scale(1.02);
+    }
+
+    .item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 1rem;
+    }
+
+    .info h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .info p {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0.5rem 0;
+    }
+
+    .pack {
+      color: #2c3e50;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+
+    .price {
+      color: #e74c3c;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 0.4rem;
+    }
+
+    .single {
+      color: #27ae60;
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.2rem;
+      }
+      nav button, .subnav button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>我的商品菜单</header>
+
+  <!-- 一级分类 -->
+  <nav>
+    <button class="active" onclick="showMainCategory('drink')">饮料</button>
+    <button onclick="showMainCategory('daily')">日常用品</button>
+    <button onclick="showMainCategory('raw')">未煮食物</button>
+  </nav>
+
+  <!-- 二级分类 -->
+  <div class="subnav" id="subnav-daily">
+    <button class="active" onclick="showSubCategory('clean')">清洁用品</button>
+    <button onclick="showSubCategory('health')">卫生用品</button>
+    <button onclick="showSubCategory('kitchen')">厨房用品</button>
+  </div>
+
+  <div class="subnav" id="subnav-raw">
+    <button class="active" onclick="showSubCategory('meat')">方便面</button>
+    <button onclick="showSubCategory('seafood')">海鲜</button>
+    <button onclick="showSubCategory('veggie')">蔬菜</button>
+  </div>
+
+  <div class="menu-container" id="menu">
+    <!-- 饮料 -->
+    <div class="item" data-main="drink">
+      <img src="IMG-20251109-WA0001.jpg" alt="饮料">
+      <div class="info">
+        <h3>Wake-up</h3>
+        <p>饮料</p>
+        <div class="pack">每箱 0 罐</div>
+        <div class="price">RM 0.00 / 箱</div>
+        <div class="single">单罐 RM 0.000</div>
+      </div>
+    </div>
+
+    <div class="item" data-main="drink">
+      <img src="IMG-20251109-WA0002.jpg" alt="饮料">
+      <div class="info">
+        <h3>Boncha</h3>
+        <p>饮品</p>
+        <div class="pack">每箱 0 瓶</div>
+        <div class="price">RM 0.00 / 箱</div>
+        <div class="single">单瓶 RM 0.00</div>
+      </div>
+    </div>
+	
+	<div class="item" data-main="drink">
+	  <img src="IMG-20251109-WA0003.jpg" alt="饮料">
+	  <div class="info">
+	    <h3>Number 1</h3>
+	    <p>饮品</p>
+	    <div class="pack">每箱 0 瓶</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单瓶 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="drink">
+	  <img src="IMG-20251109-WA0004.jpg" alt="饮料">
+	  <div class="info">
+	    <h3>Dr Thanh</h3>
+	    <p>饮品</p>
+	    <div class="pack">每箱 0 瓶</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单瓶 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="drink">
+	  <img src="IMG-20251109-WA0005.jpg" alt="饮料">
+	  <div class="info">
+	    <h3>C2</h3>
+	    <p>饮品</p>
+	    <div class="pack">每箱 0 瓶</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单瓶 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="drink">
+	  <img src="IMG-20251109-WA0006.jpg" alt="饮料">
+	  <div class="info">
+	    <h3>Tribeco</h3>
+	    <p>饮品</p>
+	    <div class="pack">每箱 0 瓶</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单瓶 RM 0.00</div>
+	  </div>
+	</div>
+
+    <!-- 日常用品 - 清洁用品 -->
+    <div class="item" data-main="daily" data-sub="clean" style="display:none">
+      <img src="images/item1.jpg" alt="清洁用品">
+      <div class="info">
+        <h3>洗衣液</h3>
+        <p>去渍强效，清香持久</p>
+        <div class="pack">每盒 2 公升</div>
+        <div class="price">RM 9.00 / 盒</div>
+        <div class="single">单瓶 RM 5.00</div>
+      </div>
+    </div>
+
+    <!-- 日常用品 - 卫生用品 -->
+    <div class="item" data-main="daily" data-sub="health" style="display:none">
+      <img src="images/item2.jpg" alt="卫生用品">
+      <div class="info">
+        <h3>牙刷</h3>
+        <p>柔软刷毛，温和清洁</p>
+        <div class="pack">每盒 5 支</div>
+        <div class="price">RM 3.50 / 盒</div>
+        <div class="single">单支 RM 0.80</div>
+      </div>
+    </div>
+
+    <!-- 日常用品 - 厨房用品 -->
+    <div class="item" data-main="daily" data-sub="kitchen" style="display:none">
+      <img src="images/item3.jpg" alt="厨房用品">
+      <div class="info">
+        <h3>锅具</h3>
+        <p>不粘锅，烹饪更轻松</p>
+        <div class="pack">每盒 1 套</div>
+        <div class="price">RM 25.00 / 盒</div>
+        <div class="single">单件 RM 25.00</div>
+      </div>
+    </div>
+
+    <!-- 未煮食物 - 肉类 -->
+    <div class="item" data-main="raw" data-sub="meat" style="display:none">
+      <img src="IMG-20251109-WA0017.jpg" alt="方便面">
+      <div class="info">
+        <h3>Hu Tieu Nam Vang</h3>
+        <p>方便面</p>
+        <div class="pack">每箱 0 包（每包 0g）</div>
+        <div class="price">RM 0.00 / 箱</div>
+        <div class="single">单包 RM 0.00</div>
+      </div>
+    </div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0018.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>To Yen Rong Bien</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0019.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Bun Rieu Cua</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0020.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Mien Phu Huong Vi Thit Bam</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0021.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Vifon Da Cua</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0022.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Acecook Mien Phu Huong Suon Heo</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0023.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Omachi Xot Spaghetti</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0024.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Pho Gnh Ha Noi</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0025.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Siu Kay Ghost Pepper Hai San</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0026.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Pho Bo</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0027.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Kokomi</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0028.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Reeva Mi Lau Nam Chua Cay</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0029.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Gau Do Ga Soi Pho</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0030.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Mi Hao Hao Chay Rau Nam</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0031.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Hao Hao Sa Te Hanh Tim</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0032.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Hao Hao</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0033.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>3Mien Mi Tom Chua Cay</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+	<div class="item" data-main="raw" data-sub="meat" style="display:none">
+	  <img src="IMG-20251109-WA0034.jpg" alt="方便面">
+	  <div class="info">
+	    <h3>Mien Phu Huong Lau Thai Tom</h3>
+	    <p>方便面</p>
+	    <div class="pack">每箱 0 包（每包 0g）</div>
+	    <div class="price">RM 0.00 / 箱</div>
+	    <div class="single">单包 RM 0.00</div>
+	  </div>
+	</div>
+	
+    <!-- 未煮食物 - 海鲜 -->
+    <div class="item" data-main="raw" data-sub="seafood" style="display:none">
+      <img src="images/raw2.jpg" alt="海鲜">
+      <div class="info">
+        <h3>虾仁</h3>
+        <p>冷冻去壳虾仁</p>
+        <div class="pack">每箱 8 包（每包 250g）</div>
+        <div class="price">RM 80.00 / 箱</div>
+        <div class="single">单包 RM 10.00</div>
+      </div>
+    </div>
+
+    <!-- 未煮食物 - 蔬菜 -->
+    <div class="item" data-main="raw" data-sub="veggie" style="display:none">
+      <img src="images/raw3.jpg" alt="蔬菜">
+      <div class="info">
+        <h3>西兰花</h3>
+        <p>绿色健康蔬菜</p>
+        <div class="pack">每箱 6 包（每包 500g）</div>
+        <div class="price">RM 24.00 / 箱</div>
+        <div class="single">单包 RM 5.00</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentMain = "drink";
+    let currentSub = "";
+
+    function showMainCategory(cat) {
+      currentMain = cat;
+      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+
+      // 显示对应子分类
+      document.getElementById("subnav-daily").style.display = (cat === "daily") ? "flex" : "none";
+      document.getElementById("subnav-raw").style.display = (cat === "raw") ? "flex" : "none";
+
+      document.querySelectorAll(".item").forEach(item => {
+        item.style.display = item.dataset.main === cat ? "block" : "none";
+      });
+    }
+
+    function showSubCategory(sub) {
+      currentSub = sub;
+      document.querySelectorAll(".subnav button").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+      document.querySelectorAll(".item").forEach(item => {
+        if (item.dataset.main === currentMain) {
+          item.style.display = item.dataset.sub === sub ? "block" : "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
