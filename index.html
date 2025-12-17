@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商店菜单（二级分类、全局搜索与智能跳转）</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 使用 Inter 字体作为默认字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7; /* 浅灰色背景 */
+        }
+        /* 标签按钮通用样式 */
+        .tab-button {
+            padding: 10px 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            color: #4b5563; /* 默认灰色文本 */
+        }
+        /* 主标签 - 选中状态 */
+        .tab-button.active {
+            background-color: #4f46e5; /* Indigo */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .tab-button:not(.active):hover {
+            background-color: #e0e7ff; /* 悬停时的浅蓝色 */
+        }
+
+        /* 子标签 - 样式调整 */
+        .sub-tab-button {
+            padding: 8px 12px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: #6b7280; /* 默认深灰色文本 */
+        }
+        /* 子标签 - 选中状态 */
+        .sub-tab-button.active {
+            background-color: #10b981; /* Emerald for active sub-tab */
+            color: white;
+            font-weight: 600;
+        }
+        .sub-tab-button:not(.active):hover {
+            background-color: #d1fae5; /* 悬停时的浅绿色 */
+        }
+        
+        /* 搜索框图标和输入框对齐 */
+        #search-input {
+            padding-left: 2.5rem; /* 留出左侧图标的空间 */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <!-- 主容器：居中显示，最大宽度限制 -->
+    <div class="max-w-5xl mx-auto bg-white shadow-2xl rounded-xl p-6 md:p-10">
+
+        <!-- 菜单标题 -->
+        <header class="text-center mb-6">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2">商店菜单 - 两级分类</h1>
+            <p class="text-xl font-light text-gray-500">欢迎浏览我们的商品清单，已按类别细分</p>
+            <div class="h-1 w-24 bg-indigo-500 mx-auto mt-4 rounded-full"></div>
+        </header>
+
+        <!-- 搜索框 -->
+        <div class="mb-8 relative">
+            <input 
+                type="text" 
+                id="search-input" 
+                placeholder="搜索所有商品名称或描述 (例如：可乐, 电池)..." 
+                oninput="filterItems()"
+                class="w-full p-3 border border-gray-300 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 text-lg"
+            >
+            <!-- 搜索图标 -->
+            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        
+        <!-- 导航标签 (主 Tabs) -->
+        <!-- 增加ID方便JS操作 -->
+        <nav id="main-tabs" class="flex justify-center space-x-2 sm:space-x-4 mb-8 p-2 bg-gray-100 rounded-xl shadow-inner">
+            <button id="tab-food" onclick="showCategory('food')" class="tab-button active">吃的</button>
+            <button id="tab-drinks" onclick="showCategory('drinks')" class="tab-button">喝的</button>
+            <button id="tab-goods" onclick="showCategory('goods')" class="tab-button">用的</button>
+        </nav>
+
+        <!-- 菜单内容区域 -->
+        <main>
+            
+            <!-- 类别区块容器：吃的 (Food) -->
+            <div id="food-content" class="category-content">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-6 flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2-3-.895-3-2 1.343-2 3-2zM12 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2zM19 12h-1m-6-4V5m0 7v-2m0 7v-2m4-4h1m-6 0h-1m-6-4V5m0 7v-2m0 7v-2"></path></svg>
+                    吃的 (Food)
+                </h2>
+                
+                <!-- 吃的 - 子标签导航 -->
+                <!-- 增加ID方便JS操作 -->
+                <nav id="food-sub-tabs" class="flex space-x-2 mb-6 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <button id="sub-tab-instant-noodles" onclick="showSubCategory('food', 'instant-noodles')" class="sub-tab-button active">方便面</button>
+                    <button id="sub-tab-snacks" onclick="showSubCategory('food', 'snacks')" class="sub-tab-button">零食</button>
+                    <button id="sub-tab-ready-meals" onclick="showSubCategory('food', 'ready-meals')" class="sub-tab-button">速食饭/粥</button>
+                </nav>
+
+                <!-- 吃的 - 方便面子内容 (默认显示) -->
+                <div id="instant-noodles-sub" class="sub-category-content space-y-4 pb-6">
+                    <!-- 方便面商品列表 (共 26 种) -->
+                    <!-- Item 1: 经典原味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" 
+                             onclick="openModal('picture/IMG_20251216_220646_edit_38769622696407.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220646_edit_38769622696407.jpg" alt="Chung Định" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='picture/cccccc/333333?text=原味';">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Chung Định</p><p class="text-sm text-gray-500">快速美味的选择 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 98.00</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 2: 红烧牛肉味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220658_edit_38781201634423.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220658_edit_38781201634423.jpg" alt="Omachi" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Omachi</p><p class="text-sm text-gray-500">国民经典口味 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 95.76</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 3: 香辣排骨味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220720_edit_38815270441858.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220720_edit_38815270441858.jpg" alt="Hảo Hảo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Hảo Hảo</p><p class="text-sm text-gray-500">浓郁排骨香辣 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.80</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 109.44</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 4: 鲜虾鱼板面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220804_edit_38104958487494.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220804_edit_38104958487494.jpg" alt="Mì SiuKay Vị Hải Sản" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì SiuKay Vị Hải Sản</p><p class="text-sm text-gray-500">清爽日式海鲜风味 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 114.00</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 5: 老坛酸菜味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220816_edit_38127601012277.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220816_edit_38127601012277.jpg" alt="Miến Phú Hương Sườn Heo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Miến Phú Hương Sườn Heo</p><p class="text-sm text-gray-500">酸爽开胃，风靡全国 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 91.20</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 6: 葱烧排骨面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220830_edit_38141134862324.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220830_edit_38141134862324.jpg" alt="Miến Phú Hương" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Miến Phú Hương</p><p class="text-sm text-gray-500">浓郁葱香，排骨入味 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 102.60</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 7: 海鲜面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220838_edit_38163971494763.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220838_edit_38163971494763.jpg" alt="Mì SiuKay Vị Bò" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì SiuKay Vị Bò</p><p class="text-sm text-gray-500">清淡鲜美，海的味道 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 118.56</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 8: 麻辣火锅味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220847_edit_38188354358295.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220847_edit_38188354358295.jpg" alt="Mì Koreno Jumbo Vị Kim Chi" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Koreno Jumbo Vị Kim Chi</p><p class="text-sm text-gray-500">香辣刺激，火锅体验 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 125.40</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 9: 藤椒牛肉面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220918_edit_38221716927710.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220918_edit_38221716927710.jpg" alt="Phở Gà" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Phở Gà</p><p class="text-sm text-gray-500">清新麻辣，藤椒飘香 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 95.76</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 10: 泡椒牛肉面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220939_edit_38230816813383.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_220939_edit_38230816813383.jpg" alt="Phở Gánh Hà Nội" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Phở Gánh Hà Nội</p><p class="text-sm text-gray-500">酸辣刺激，劲道十足 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 91.20</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 11: 豚骨拉面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221033_edit_38242923301920.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221033_edit_38242923301920.jpg" alt="Omachi Bò Hầm" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Omachi Bò Hầm</p><p class="text-sm text-gray-500">浓厚日式猪骨汤底 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 6.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 136.80</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 12: 冬阴功味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221040_edit_38259666240299.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221040_edit_38259666240299.jpg" alt="Mì khoai tây Omachi" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì khoai tây Omachi</p><p class="text-sm text-gray-500">泰式酸辣，异域风情 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 125.40</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 13: 咖喱海鲜 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221052_edit_38360957438646.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221052_edit_38360957438646.jpg" alt="Mi Omachi sườn hầm ngũ quả" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mi Omachi sườn hầm ngũ quả</p><p class="text-sm text-gray-500">南洋风味，香浓咖喱 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 118.56</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 14: 番茄鸡蛋面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221100_edit_38375651437234.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221100_edit_38375651437234.jpg" alt="Mì Lẩu Nấm Chua Cay" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Lẩu Nấm Chua Cay</p><p class="text-sm text-gray-500">清新酸甜，家常味道 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 91.20</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 15: 香菇炖鸡面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221108_edit_38390085291916.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221108_edit_38390085291916.jpg" alt="Đệ Nhất Mì Gia Thịt Băm" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Đệ Nhất Mì Gia Thịt Băm</p><p class="text-sm text-gray-500">滋补鸡汤，香菇提鲜 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 102.60</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 16: 炒面王-黑胡椒牛柳 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221113_edit_38397848094986.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221113_edit_38397848094986.jpg" alt="Mì Kokomi Tôm chua cay" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Kokomi Tôm chua cay</p><p class="text-sm text-gray-500">干拌系列，浓郁黑胡椒 / 整箱包含 12 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.80</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 66.12</span></p> </div>
+                        </div>
+                    </div>
+                    <!-- Item 17: 干拌面-麻酱味 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221121_edit_38409831046492.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221121_edit_38409831046492.jpg" alt="Mì Gấu Đỏ Gà Sợi Phở" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Gấu Đỏ Gà Sợi Phở</p><p class="text-sm text-gray-500">麻酱浓郁，凉拌优选 / 整箱包含 12 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 57.00</span></p> </div>
+                        </div>
+                    </div>
+                    <!-- Item 18: 辛拉面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221127_edit_38421481910342.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221127_edit_38421481910342.jpg" alt="Mì Lẩu Thái Hương Vị" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Lẩu Thái Hương Vị</p><p class="text-sm text-gray-500">韩式劲辣，面条Q弹 / 整箱包含 20 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 5.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 104.50</span></p> </div>
+                        </div>
+                    </div>
+                    <!-- Item 19: 担担面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221141_edit_38433989518358.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221141_edit_38433989518358.jpg" alt="Hủ Tiếu Sườn Heo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Hủ Tiếu Sườn Heo</p><p class="text-sm text-gray-500">川味经典，麻辣鲜香 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 95.76</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 20: 蟹黄面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221153_edit_38449851298612.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221153_edit_38449851298612.jpg" alt="Hủ Tiếu Riêu Cua" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Hủ Tiếu Riêu Cua</p><p class="text-sm text-gray-500">浓郁蟹香，高端享受 / 整箱包含 10 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 7.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 66.50</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 21: 三鲜伊面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221202_edit_38460416673296.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221202_edit_38460416673296.jpg" alt="Mì khoai tây Omachi Xốt Bò Hầm" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì khoai tây Omachi Xốt Bò Hầm</p><p class="text-sm text-gray-500">经典三鲜汤底 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.00</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 91.20</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 22: 鸡汁面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221209_edit_38759366360578.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221209_edit_38759366360578.jpg" alt="Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt</p><p class="text-sm text-gray-500">清甜鸡汤，营养美味 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 3.80</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 86.64</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 23: 珍菇上汤 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221216_edit_38481574980267.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221216_edit_38481574980267.jpg" alt="Mì Hảo Hảo Chay Hương Vị Rau Nấm" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Mì Hảo Hảo Chay Hương Vị Rau Nấm</p><p class="text-sm text-gray-500">菌菇精华，清爽可口 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 95.76</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 24: 鲍鱼海鲜面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221231_edit_38495600842605.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221231_edit_38495600842605.jpg" alt="Phở Bò" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Phở Bò</p><p class="text-sm text-gray-500">豪华海鲜，高档享受 / 整箱包含 12 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 9.50</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 108.30</span></p> </div>
+                        </div>
+                    </div>
+                    <!-- Item 25: 酸辣粉 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221241_edit_38506982184216.jpg')" title="点击放大图片">
+                            <img src="picture/IMG_20251216_221241_edit_38506982184216.jpg" alt="Bánh đa Cua" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">Bánh đa Cua</p><p class="text-sm text-gray-500">地道重庆小吃，粉条劲道 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.80</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 109.44</span></p></div>
+                        </div>
+                    </div>
+                    <!-- Item 26: 重庆小面 -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('https://placehold.co/600x600/EF4444/FFFFFF?text=重庆小面')" title="点击放大图片">
+                            <img src="picture/EF4444/FFFFFF?text=小面" alt="方便面 - 重庆小面图片" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">方便面 - 重庆小面</p><p class="text-sm text-gray-500">麻辣鲜香，地道风味 / 整箱包含 24 包</p></div>
+                            <div class="text-right"><p class="text-sm font-medium text-gray-600">单包: <span class="text-indigo-600 font-bold">￥ 4.20</span></p><p class="text-lg font-bold text-indigo-700">整箱: <span class="text-indigo-600 font-bold">￥ 95.76</span></p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 吃的 - 零食子内容 (默认隐藏) -->
+                <div id="snacks-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-green-700">零食 (Snacks) - 推荐</h3>
+                    <!-- Mock Item 1: 薯片 - 海盐味 -->
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="snacks">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/065F46/FFFFFF?text=薯片" alt="薯片" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">薯片 - 海盐味</p><p class="text-sm text-gray-500">大包家庭装 / 单包: ￥ 12.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-green-700">￥ 12.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 巧克力棒 -->
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="snacks">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/7C2D12/FFFFFF?text=巧克力" alt="巧克力棒" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">巧克力棒 - 焦糖榛果</p><p class="text-sm text-gray-500">能量补充 / 单条: ￥ 6.50</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-green-700">￥ 6.50</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 吃的 - 速食饭/粥子内容 (默认隐藏) -->
+                <div id="ready-meals-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-green-700">速食饭/粥 (Ready Meals) - 推荐</h3>
+                    <!-- Mock Item 1: 微波炒饭 - 扬州炒饭 -->
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="ready-meals">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/FBBF24/000000?text=炒饭" alt="微波炒饭" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">微波炒饭 - 扬州炒饭</p><p class="text-sm text-gray-500">5分钟加热即食 / 单盒: ￥ 18.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-green-700">￥ 18.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 速食粥 - 皮蛋瘦肉粥 -->
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="ready-meals">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/9CA3AF/1F2937?text=皮蛋粥" alt="皮蛋瘦肉粥" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">速食粥 - 皮蛋瘦肉粥</p><p class="text-sm text-gray-500">无需开火，热水冲泡 / 单杯: ￥ 8.50</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-green-700">￥ 8.50</p></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 类别区块容器：喝的 (Drinks) -->
+            <div id="drinks-content" class="category-content hidden">
+                <h2 class="text-3xl font-bold text-teal-700 mb-6 flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15v2m0 4h2m-2-4h2m0 0V5a2 2 0 00-2-2h-3.414l-1.5-1.5A.5.5 0 005.5 3H4a2 2 0 00-2 2v14a2 2 0 002 2h7a2 2 0 002-2v-4z"></path></svg>
+                    喝的 (Drinks)
+                </h2>
+                 <!-- 喝的 - 子标签导航 -->
+                <nav id="drinks-sub-tabs" class="flex space-x-2 mb-6 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <button id="sub-tab-sodas" onclick="showSubCategory('drinks', 'sodas')" class="sub-tab-button active">碳酸饮料</button>
+                    <button id="sub-tab-juice-tea" onclick="showSubCategory('drinks', 'juice-tea')" class="sub-tab-button">果汁茶饮</button>
+                    <button id="sub-tab-water-milk" onclick="showSubCategory('drinks', 'water-milk')" class="sub-tab-button">水及牛奶</button>
+                </nav>
+
+                <!-- 喝的 - 碳酸饮料子内容 (默认显示) -->
+                <div id="sodas-sub" class="sub-category-content space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-teal-700">碳酸饮料 (Sodas) - 推荐</h3>
+                    <!-- Mock Item 1: 可乐 - 零度 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/2DD4BF/000000?text=可乐" alt="零度可乐" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">可乐 - 零度 (500ml)</p><p class="text-sm text-gray-500">清爽无糖 / 单瓶: ￥ 4.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 4.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 柠檬汽水 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/FACC15/000000?text=汽水" alt="柠檬汽水" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">柠檬汽水 (330ml)</p><p class="text-sm text-gray-500">经典黄瓶装 / 单瓶: ￥ 3.50</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 3.50</p></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 喝的 - 果汁茶饮子内容 (默认隐藏) -->
+                <div id="juice-tea-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-teal-700">果汁茶饮 (Juice & Tea) - 推荐</h3>
+                    <!-- Mock Item 1: 橙汁 - 100% 鲜榨 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="juice-tea">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/F97316/FFFFFF?text=橙汁" alt="鲜榨橙汁" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">橙汁 - 100% 鲜榨 (1L)</p><p class="text-sm text-gray-500">原味无添加 / 单盒: ￥ 15.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 15.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 冰红茶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="juice-tea">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/EF4444/FFFFFF?text=红茶" alt="冰红茶" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">冰红茶 (500ml)</p><p class="text-sm text-gray-500">经典柠檬味 / 单瓶: ￥ 3.50</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 3.50</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 喝的 - 水及牛奶子内容 (默认隐藏) -->
+                <div id="water-milk-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-teal-700">水及牛奶 (Water & Milk) - 推荐</h3>
+                    <!-- Mock Item 1: 矿泉水 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="water-milk">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/D1D5DB/1F2937?text=矿泉水" alt="矿泉水" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">矿泉水 (550ml)</p><p class="text-sm text-gray-500">天然山泉水 / 单瓶: ￥ 2.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 2.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 纯牛奶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="water-milk">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/FBBF24/1F2937?text=牛奶" alt="纯牛奶" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">纯牛奶 (250ml)</p><p class="text-sm text-gray-500">高钙原味 / 单盒: ￥ 3.50</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-teal-700">￥ 3.50</p></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 类别区块容器：用的 (Goods) -->
+            <div id="goods-content" class="category-content hidden">
+                <h2 class="text-3xl font-bold text-yellow-700 mb-6 flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.495 9.467 5 8 5c-4 0-5 3-5 5v5h4l1-1h4l1 1h4v-5c0-2-1-5-5-5-1.467 0-2.832.495-4 1.253zM18 17H6"></path></svg>
+                    用的 (Goods)
+                </h2>
+                <!-- 用的 - 子标签导航 -->
+                <nav id="goods-sub-tabs" class="flex space-x-2 mb-6 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <button id="sub-tab-daily-goods" onclick="showSubCategory('goods', 'daily-goods')" class="sub-tab-button active">日用百货</button>
+                    <button id="sub-tab-cleaning-supplies" onclick="showSubCategory('goods', 'cleaning-supplies')" class="sub-tab-button">清洁用品</button>
+                    <button id="sub-tab-electronics" onclick="showSubCategory('goods', 'electronics')" class="sub-tab-button">电子配件</button>
+                </nav>
+
+                <!-- 用的 - 日用百货子内容 (默认显示) -->
+                <div id="daily-goods-sub" class="sub-category-content space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-yellow-700">日用百货 (Daily Goods) - 推荐</h3>
+                    <!-- Mock Item 1: 抽纸 - 三层 -->
+                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg shadow-sm item-card" data-main-category="goods" data-sub-category="daily-goods">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-yellow-300 overflow-hidden"><img src="picture/FCD34D/1F2937?text=纸巾" alt="抽纸" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">抽纸 - 三层 120抽</p><p class="text-sm text-gray-500">家庭/办公室适用 / 单包: ￥ 5.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-yellow-700">￥ 5.00</p></div>
+                        </div>
+                    </div>
+                    <!-- Mock Item 2: 牙刷 - 软毛 -->
+                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg shadow-sm item-card" data-main-category="goods" data-sub-category="daily-goods">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-yellow-300 overflow-hidden"><img src="picture/CA8A04/FFFFFF?text=牙刷" alt="牙刷" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">牙刷 - 软毛 (两支装)</p><p class="text-sm text-gray-500">敏感牙龈适用 / 单套: ￥ 12.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-yellow-700">￥ 12.00</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用的 - 清洁用品子内容 (默认隐藏) -->
+                <div id="cleaning-supplies-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-yellow-700">清洁用品 (Cleaning Supplies) - 推荐</h3>
+                    <!-- Mock Item 1: 洗衣液 - 薰衣草香 -->
+                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg shadow-sm item-card" data-main-category="goods" data-sub-category="cleaning-supplies">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-yellow-300 overflow-hidden"><img src="picture/3B82F6/FFFFFF?text=洗衣液" alt="洗衣液" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">洗衣液 - 薰衣草香 (2kg)</p><p class="text-sm text-gray-500">深层洁净 / 单瓶: ￥ 25.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-yellow-700">￥ 25.00</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用的 - 电子配件子内容 (默认隐藏) -->
+                <div id="electronics-sub" class="sub-category-content hidden space-y-4 pb-6">
+                    <h3 class="text-2xl font-semibold text-yellow-700">电子配件 (Electronics) - 推荐</h3>
+                    <!-- Mock Item 1: 5号电池 - 4节装 -->
+                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg shadow-sm item-card" data-main-category="goods" data-sub-category="electronics">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-yellow-300 overflow-hidden"><img src="picture/9CA3AF/1F2937?text=电池" alt="5号电池" class="w-full h-full object-cover"></div>
+                        <div class="flex-grow flex justify-between items-center">
+                            <div><p class="text-xl font-semibold text-gray-800">5号电池 - 4节装</p><p class="text-sm text-gray-500">高性能碱性电池 / 单组: ￥ 18.00</p></div>
+                            <div class="text-right"><p class="text-lg font-bold text-yellow-700">￥ 18.00</p></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="text-center mt-12 pt-6 border-t border-gray-200">
+            <p class="text-gray-500 text-sm">此为测试菜单，所有价格仅供参考。实体店欢迎您的光临！</p>
+        </footer>
+
+    </div>
+
+    <!-- 图片放大模态框 (Modal/Lightbox) -->
+    <div id="image-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-4xl w-full max-h-full overflow-hidden" onclick="event.stopPropagation()">
+            <button 
+                class="absolute top-4 right-4 text-white text-4xl font-light hover:text-indigo-400 transition duration-150" 
+                onclick="closeModal()" 
+                aria-label="关闭图片"
+            >
+                &times;
+            </button>
+            <img 
+                id="modal-image" 
+                src="" 
+                alt="放大后的商品图片" 
+                class="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            >
+        </div>
+    </div>
+
+    <script>
+        // 全局元素引用
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const mainTabs = document.getElementById('main-tabs');
+        const allSubNavs = document.querySelectorAll('.category-content > nav');
+        const allCategories = document.querySelectorAll('.category-content');
+        const searchInput = document.getElementById('search-input');
+        const allItems = document.querySelectorAll('.item-card');
+        const allSubContents = document.querySelectorAll('.sub-category-content');
+
+        // 默认子类别映射
+        const defaultSubCategories = {
+            'food': 'instant-noodles',
+            'drinks': 'sodas',
+            'goods': 'daily-goods'
+        };
+
+        // 状态：保存当前选中的类别
+        let currentActiveSub = defaultSubCategories;
+
+        /**
+         * 打开图片放大模态框
+         * @param {string} src - 要显示的图片URL。
+         */
+        function openModal(src) {
+            modalImage.src = src;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // 阻止背景滚动
+        }
+
+        /**
+         * 关闭图片放大模态框
+         */
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+
+        // 监听键盘 Esc 键关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        
+        /**
+         * 隐藏所有导航元素，进入搜索结果展示模式
+         */
+        function enterSearchMode() {
+            mainTabs.classList.add('hidden');
+            allSubNavs.forEach(nav => nav.classList.add('hidden'));
+            
+            // 确保所有主内容和子内容容器可见，以便显示匹配项
+            allCategories.forEach(c => c.classList.remove('hidden'));
+            allSubContents.forEach(sub => sub.classList.remove('hidden'));
+        }
+
+        /**
+         * 恢复导航元素，退出搜索结果模式，回到当前激活的分类页
+         */
+        function exitSearchMode() {
+            mainTabs.classList.remove('hidden');
+            allSubNavs.forEach(nav => nav.classList.remove('hidden'));
+            
+            // 隐藏所有主类别内容，然后恢复到当前激活的主类别
+            allCategories.forEach(c => c.classList.add('hidden'));
+
+            const activeMainTabId = document.querySelector('.tab-button.active')?.id.replace('tab-', '');
+            if (activeMainTabId) {
+                // 恢复到正常分类视图，这次保留 shouldClearFilter = false
+                showCategory(activeMainTabId);
+            } else {
+                // 默认加载
+                showCategory('food');
+            }
+        }
+        
+        /**
+         * 筛选商品列表（全局搜索）
+         */
+        function filterItems() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            if (query === '') {
+                // 搜索框为空时，退出搜索模式，恢复正常分类视图
+                exitSearchMode();
+                return;
+            }
+
+            // 搜索框不为空时，进入搜索模式
+            enterSearchMode();
+
+            allItems.forEach(item => {
+                const textContent = item.textContent.toLowerCase();
+                
+                if (textContent.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // 隐藏没有匹配项的主类别容器，实现智能跳转的效果
+            allCategories.forEach(categoryContainer => {
+                // 检查容器内是否有可见的商品卡片
+                const matchingItemsInContainer = categoryContainer.querySelector('.item-card:not(.hidden)');
+                if (!matchingItemsInContainer) {
+                    categoryContainer.classList.add('hidden');
+                } else {
+                    categoryContainer.classList.remove('hidden');
+                }
+            });
+        }
+
+
+        /**
+         * 切换显示的商品类别内容 (主类别)
+         * @param {string} category - 要显示的类别ID (food, drinks, goods)
+         */
+        function showCategory(category) {
+            // 如果是在搜索模式，则不执行分类切换逻辑
+            if (searchInput.value.trim() !== '') return;
+
+            // 恢复子导航可见性 (仅针对当前类别)
+            allSubNavs.forEach(nav => nav.classList.remove('hidden'));
+
+            // 隐藏所有主内容区域
+            allCategories.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // 移除所有主标签的 active 状态
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // 显示选定的主内容区域
+            const selectedContent = document.getElementById(category + '-content');
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+            }
+
+            // 设置选定的主标签为 active 状态
+            const selectedButton = document.getElementById('tab-' + category);
+            if (selectedButton) {
+                selectedButton.classList.add('active');
+            }
+            
+            // 自动激活该主类别下的当前子类别（或默认子类别）
+            const subCategoryToShow = currentActiveSub[category] || defaultSubCategories[category];
+            showSubCategory(category, subCategoryToShow, false); 
+        }
+
+        /**
+         * 切换显示的商品子类别内容
+         * @param {string} mainCategory - 父类别 (food, drinks, goods)
+         * @param {string} subCategory - 要显示的子类别ID (instant-noodles, snacks, etc.)
+         * @param {boolean} shouldClearFilter - 是否应该清空过滤器 (点击子标签时清空)
+         */
+        function showSubCategory(mainCategory, subCategory, shouldClearFilter = true) {
+            // 如果是在搜索模式，则不执行分类切换逻辑
+            if (searchInput.value.trim() !== '') return;
+
+            if (shouldClearFilter) {
+                searchInput.value = ''; // 清空搜索框
+            }
+            
+            // 1. 隐藏所有同级子内容区域
+            const allSubs = document.querySelectorAll(`#${mainCategory}-content .sub-category-content`);
+            allSubs.forEach(sub => {
+                sub.classList.add('hidden');
+            });
+
+            // 2. 移除所有子标签的 active 状态
+            const allSubButtons = document.querySelectorAll(`#${mainCategory}-content .sub-tab-button`);
+            allSubButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // 3. 确保当前主类别下的所有商品卡片可见（因为搜索清空了，要恢复）
+            const allItemsInMainCat = document.querySelectorAll(`#${mainCategory}-content .item-card`);
+            allItemsInMainCat.forEach(item => {
+                item.classList.remove('hidden');
+            });
+            
+            // 4. 显示选定的子内容区域
+            const selectedSubContent = document.getElementById(subCategory + '-sub');
+            if (selectedSubContent) {
+                selectedSubContent.classList.remove('hidden');
+            }
+
+            // 5. 设置选定的子标签为 active 状态
+            const selectedSubButton = document.getElementById('sub-tab-' + subCategory);
+            if (selectedSubButton) {
+                selectedSubButton.classList.add('active');
+            }
+
+            // 6. 更新状态
+            currentActiveSub[mainCategory] = subCategory;
+        }
+
+        // 页面加载完成后，确保显示默认的主类别和子类别
+        window.onload = function() {
+            showCategory('food');
+        };
+    </script>
+
+</body>
+</html>
