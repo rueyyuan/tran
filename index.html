@@ -105,6 +105,7 @@
                     <button id="sub-tab-snacks" onclick="showSubCategory('food', 'snacks')" class="sub-tab-button">零食</button>
                     <button id="sub-tab-ready-meals" onclick="showSubCategory('food', 'ready-meals')" class="sub-tab-button">速食饭/粥</button>
                 </nav>
+				<div id="instant-noodles-sub" class="sub-category-content space-y-4 pb-6">
 
                 <!-- 吃的 - 方便面子内容 (默认显示) -->
                 <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
@@ -650,29 +651,86 @@
                             </div>
                         </div>
                     </div>
+				</div> <!-- ✅ 添加这一行:结束 instant-noodles-sub 容器 -->
+				<!-- ✅ 添加零食容器 -->
+				<div id="snacks-sub" class="sub-category-content hidden space-y-4 pb-6">
+				    <h3 class="text-2xl font-semibold text-green-700">零食 (Snacks) - 推荐</h3>
+				    
+				    <!-- 零食商品 Item 1: 薯片 -->
+				    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="snacks">
+				        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden">
+				            <img src="picture/065F46/FFFFFF?text=薯片" alt="薯片" class="w-full h-full object-cover">
+				        </div>
+				        <div class="flex-grow">
+				            <p class="text-xl font-semibold text-gray-800">薯片 - 海盐味</p>
+				            <p class="text-sm text-gray-500">大包家庭装</p>
+				            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+				                <div class="bg-white rounded px-2 py-1">
+				                    单包<br>
+				                    <span class="font-bold text-green-600">RM 12.00</span>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    
+				    <!-- 零食商品 Item 2: 巧克力 -->
+				    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="snacks">
+				        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden">
+				            <img src="picture/7C2D12/FFFFFF?text=巧克力" alt="巧克力棒" class="w-full h-full object-cover">
+				        </div>
+				        <div class="flex-grow">
+				            <p class="text-xl font-semibold text-gray-800">巧克力棒 - 焦糖榛果</p>
+				            <p class="text-sm text-gray-500">能量补充</p>
+				            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+				                <div class="bg-white rounded px-2 py-1">
+				                    单条<br>
+				                    <span class="font-bold text-green-600">RM 6.50</span>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    
+				    <!-- 可以继续添加更多零食商品 -->
+				</div> <!-- 结束 snacks-sub -->
                 <!-- 吃的 - 速食饭/粥子内容 (默认隐藏) -->
                 <div id="ready-meals-sub" class="sub-category-content hidden space-y-4 pb-6">
                     <h3 class="text-2xl font-semibold text-green-700">速食饭/粥 (Ready Meals) - 推荐</h3>
+                    
                     <!-- Mock Item 1: 微波炒饭 - 扬州炒饭 -->
-                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="ready-meals">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/FBBF24/000000?text=炒饭" alt="微波炒饭" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">微波炒饭 - 扬州炒饭</p><p class="text-sm text-gray-500">5分钟加热即食 / 单盒: RM 18.00</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-green-700">RM 18.00</p></div>
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="ready-meals">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-green-300" onclick="openModal('picture/FBBF24/000000?text=炒饭')">
+                            <img src="picture/FBBF24/000000?text=炒饭" alt="微波炒饭" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">微波炒饭 - 扬州炒饭</p>
+                            <p class="text-sm text-gray-500">5分钟加热即食</p>
+                            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    单盒<br>
+                                    <span class="font-bold text-green-600">RM 18.00</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                     <!-- Mock Item 2: 速食粥 - 皮蛋瘦肉粥 -->
-                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm item-card" data-main-category="food" data-sub-category="ready-meals">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-green-300 overflow-hidden"><img src="picture/9CA3AF/1F2937?text=皮蛋粥" alt="皮蛋瘦肉粥" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">速食粥 - 皮蛋瘦肉粥</p><p class="text-sm text-gray-500">无需开火，热水冲泡 / 单杯: RM 8.50</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-green-700">RM 8.50</p></div>
+                    <div class="flex items-center p-4 bg-green-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="ready-meals">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-green-300" onclick="openModal('picture/9CA3AF/1F2937?text=皮蛋粥')">
+                            <img src="picture/9CA3AF/1F2937?text=皮蛋粥" alt="皮蛋瘦肉粥" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">速食粥 - 皮蛋瘦肉粥</p>
+                            <p class="text-sm text-gray-500">无需开火,热水冲泡</p>
+                            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    单杯<br>
+                                    <span class="font-bold text-green-600">RM 8.50</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-            </div>
-
+			</div>
             <!-- 类别区块容器：喝的 (Drinks) -->
             <div id="drinks-content" class="category-content hidden">
                 <h2 class="text-3xl font-bold text-teal-700 mb-6 flex items-center">
