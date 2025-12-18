@@ -269,33 +269,43 @@
                             </div>
                             <div class="bg-white rounded px-2 py-1">
                                 Toàn bộ hộp<br>
-                                <span class="font-bold text-indigo-600">RM 48.00</span>
+                                <span class="font-bold text-indigo-600">RM 46.00</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Item 10: Phở Gánh Hà Nội -->
-                <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
-                    <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220939_edit_38230816813383.jpg')">
-                        <img src="picture/IMG_20251216_220939_edit_38230816813383.jpg" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-grow">
-                        <p class="text-xl font-semibold text-gray-800">Phở Gánh Hà Nội</p>
-                        <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 24 gói</p>
-                        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                            <div class="bg-white rounded px-2 py-1">
-                                Gói đơn<br>
-                                <span class="font-bold text-indigo-600">RM 2.00</span>
-                            </div>
-                            <div class="bg-white rounded px-2 py-1">
-                                Toàn bộ hộp<br>
-                                <span class="font-bold text-indigo-600">RM 48.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+				<div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card relative" data-main-category="food" data-sub-category="instant-noodles">
+				    
+				    <!-- 水印层 -->
+				    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+				        <span class="text-3xl font-bold text-red-600 opacity-50 whitespace-nowrap" style="transform: rotate(-35deg);">
+				            Tạm thời hết hàng
+				        </span>
+				    </div>
+				    
+				    <!-- 图片 -->
+				    <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_220939_edit_38230816813383.jpg')">
+				        <img src="picture/IMG_20251216_220939_edit_38230816813383.jpg" class="w-full h-full object-cover">
+				    </div>
+				    
+				    <!-- 内容区 -->
+				    <div class="flex-grow">
+				        <p class="text-xl font-semibold text-gray-800">Phở Gánh Hà Nội</p>
+				        <p class="text-sm text-gray-500">Một toàn bộ hộp chứa -- gói</p>
+				        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+				            <div class="bg-white rounded px-2 py-1">
+				                Gói đơn<br>
+				                <span class="font-bold text-indigo-600">RM -.--</span>
+				            </div>
+				            <div class="bg-white rounded px-2 py-1">
+				                Toàn bộ hộp<br>
+				                <span class="font-bold text-indigo-600">RM --.--</span>
+				            </div>
+				        </div>
+				    </div>
+				</div>
                 <!-- Item 11: Omachi Bò Hầm -->
                 <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
                     <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221033_edit_38242923301920.jpg')">
@@ -442,22 +452,22 @@
                         </div>
                     </div>
                 </div>
-                <!-- Item 18: Mì Lẩu Thái Hương Vị -->
+                <!-- Item 18: Mì Lẩu Thái -->
                 <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
                     <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221127_edit_38421481910342.jpg')">
                         <img src="picture/IMG_20251216_221127_edit_38421481910342.jpg" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow">
-                        <p class="text-xl font-semibold text-gray-800">Mì Lẩu Thái Hương Vị</p>
-                        <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói<strong>（10 gói RM 18）</strong></p>
+                        <p class="text-xl font-semibold text-gray-800">Mì Lẩu Thái</p>
+                        <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói</p>
                         <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                             <div class="bg-white rounded px-2 py-1">
                                 Gói đơn<br>
-                                <span class="font-bold text-indigo-600">RM 2.00</span>
+                                <span class="font-bold text-indigo-600">RM 1.80</span>
                             </div>
                             <div class="bg-white rounded px-2 py-1">
                                 Toàn bộ hộp<br>
-                                <span class="font-bold text-indigo-600">RM 52.00</span>
+                                <span class="font-bold text-indigo-600">RM 46.00</span>
                             </div>
                         </div>
                     </div>
@@ -482,14 +492,34 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Item 20: Hủ Tiếu Riêu Cua -->
+                    <!-- Item 20: Hủ Tiếu thit bam -->
                     <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
                         <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221153_edit_38449851298612.jpg')">
                             <img src="picture/IMG_20251216_221153_edit_38449851298612.jpg" class="w-full h-full object-cover">
                         </div>
                         <div class="flex-grow">
-                            <p class="text-xl font-semibold text-gray-800">Hủ Tiếu Riêu Cua</p>
-                            <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói<strong>（10 gói RM 17）</strong></p>
+                            <p class="text-xl font-semibold text-gray-800">Hủ Tiếu thit bam</p>
+                            <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói<strong>（10 gói RM 18）</strong></p>
+                            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    Gói đơn<br>
+                                    <span class="font-bold text-indigo-600">RM 2.00</span>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    Toàn bộ hộp<br>
+                                    <span class="font-bold text-indigo-600">RM 52.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 21: Mì khoai tây Omachi Xốt Bò Hầm -->
+                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221202_edit_38460416673296.jpg')">
+                            <img src="picture/IMG_20251216_221202_edit_38460416673296.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">Mì khoai tây Omachi Xốt Bò Hầm</p>
+                            <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói</p>
                             <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                 <div class="bg-white rounded px-2 py-1">
                                     Gói đơn<br>
@@ -502,13 +532,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Item 21: Mì khoai tây Omachi Xốt Bò Hầm -->
+                    <!-- Item 22: Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt -->
                     <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221202_edit_38460416673296.jpg')">
-                            <img src="picture/IMG_20251216_221202_edit_38460416673296.jpg" class="w-full h-full object-cover">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221209_edit_38759366360578.jpg')">
+                            <img src="picture/IMG_20251216_221209_edit_38759366360578.jpg" class="w-full h-full object-cover">
                         </div>
                         <div class="flex-grow">
-                            <p class="text-xl font-semibold text-gray-800">Mì khoai tây Omachi Xốt Bò Hầm</p>
+                            <p class="text-xl font-semibold text-gray-800">Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt</p>
                             <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói<strong>（10 gói RM 18）</strong></p>
                             <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                 <div class="bg-white rounded px-2 py-1">
@@ -517,27 +547,7 @@
                                 </div>
                                 <div class="bg-white rounded px-2 py-1">
                                     Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 48.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item 22: Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt -->
-                    <div class="flex items-center p-4 bg-indigo-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="food" data-sub-category="instant-noodles">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-indigo-300" onclick="openModal('picture/IMG_20251216_221209_edit_38759366360578.jpg')">
-                            <img src="picture/IMG_20251216_221209_edit_38759366360578.jpg" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-xl font-semibold text-gray-800">Cháo Tổ Yến Rong Biển Thịt Bằm Đại Việt</p>
-                            <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói</p>
-                            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                                <div class="bg-white rounded px-2 py-1">
-                                    Gói đơn<br>
-                                    <span class="font-bold text-indigo-600">RM 1.00</span>
-                                </div>
-                                <div class="bg-white rounded px-2 py-1">
-                                    Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 26.00</span>
+                                    <span class="font-bold text-indigo-600">RM 52.00</span>
                                 </div>
                             </div>
                         </div>
@@ -553,11 +563,11 @@
                             <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                 <div class="bg-white rounded px-2 py-1">
                                     Gói đơn<br>
-                                    <span class="font-bold text-indigo-600">RM 2.00</span>
+                                    <span class="font-bold text-indigo-600">RM 1.00</span>
                                 </div>
                                 <div class="bg-white rounded px-2 py-1">
                                     Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 48.00</span>
+                                    <span class="font-bold text-indigo-600">RM 26.00</span>
                                 </div>
                             </div>
                         </div>
@@ -569,15 +579,15 @@
                         </div>
                         <div class="flex-grow">
                             <p class="text-xl font-semibold text-gray-800">Phở Bò</p>
-                            <p class="text-sm text-gray-500">豪华海鲜，高档享受 / toàn bộ hộp包含 12 包</p>
+                            <p class="text-sm text-gray-500">Một toàn bộ hộp chứa 30 gói</p>
                             <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                 <div class="bg-white rounded px-2 py-1">
                                     Gói đơn<br>
-                                    <span class="font-bold text-indigo-600">RM 9.50</span>
+                                    <span class="font-bold text-indigo-600">RM 1.80</span>
                                 </div>
                                 <div class="bg-white rounded px-2 py-1">
                                     Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 108.30</span>
+                                    <span class="font-bold text-indigo-600">RM 46.00</span>
                                 </div>
                             </div>
                         </div>
@@ -597,7 +607,7 @@
                                 </div>
                                 <div class="bg-white rounded px-2 py-1">
                                     Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 48.00</span>
+                                    <span class="font-bold text-indigo-600">RM 52.00</span>
                                 </div>
                             </div>
                         </div>
@@ -617,7 +627,7 @@
                                 </div>
                                 <div class="bg-white rounded px-2 py-1">
                                     Toàn bộ hộp<br>
-                                    <span class="font-bold text-indigo-600">RM 47.00</span>
+                                    <span class="font-bold text-indigo-600">RM 48.00</span>
                                 </div>
                             </div>
                         </div>
