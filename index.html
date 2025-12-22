@@ -738,29 +738,22 @@
                     <svg class="w-8 h-8 mr-3 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15v2m0 4h2m-2-4h2m0 0V5a2 2 0 00-2-2h-3.414l-1.5-1.5A.5.5 0 005.5 3H4a2 2 0 00-2 2v14a2 2 0 002 2h7a2 2 0 002-2v-4z"></path></svg>
                     喝的 (Drinks)
                 </h2>
-                 <!-- 喝的 - 子标签导航 -->
+                <!-- 喝的 - 子标签导航 -->
                 <nav id="drinks-sub-tabs" class="flex space-x-2 mb-6 p-2 bg-gray-50 rounded-lg border border-gray-200">
                     <button id="sub-tab-sodas" onclick="showSubCategory('drinks', 'sodas')" class="sub-tab-button active">碳酸饮料</button>
-                    <button id="sub-tab-juice-tea" onclick="showSubCategory('drinks', 'juice-tea')" class="sub-tab-button">果汁茶饮</button>
-                    <button id="sub-tab-water-milk" onclick="showSubCategory('drinks', 'water-milk')" class="sub-tab-button">水及牛奶</button>
                 </nav>
-
                 <!-- 喝的 - 碳酸饮料子内容 (默认显示) -->
                 <div id="sodas-sub" class="sub-category-content space-y-4 pb-6">
                     <h3 class="text-2xl font-semibold text-teal-700">碳酸饮料 (Sodas) - 推荐</h3>
-                    <!-- Mock Item 1: 矿泉水 -->
-                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card"
-                         data-main-category="drinks" data-sub-category="water-milk">
                     
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden">
-                            <img src="picture/D1D5DB/1F2937?text=矿泉水" alt="矿泉水" class="w-full h-full object-cover">
+                    <!-- Item 1: 矿泉水 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190708_edit_58389594881319.jpg')">
+                            <img src="picture/IMG_20251222_190708_edit_58389594881319.jpg" alt="矿泉水" class="w-full h-full object-cover">
                         </div>
-                    
                         <div class="flex-grow">
                             <p class="text-xl font-semibold text-gray-800">矿泉水 (550ml)</p>
                             <p class="text-sm text-gray-500 mb-2">天然山泉水</p>
-                    
-                            <!-- 价格区块：手机不跑，电脑整齐 -->
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                                 <div class="bg-white rounded px-2 py-1">
                                     一罐<br>
@@ -777,50 +770,308 @@
                             </div>
                         </div>
                     </div>
-				</div>
-                
-                <!-- 喝的 - 果汁茶饮子内容 (默认隐藏) -->
-                <div id="juice-tea-sub" class="sub-category-content hidden space-y-4 pb-6">
-                    <h3 class="text-2xl font-semibold text-teal-700">果汁茶饮 (Juice & Tea) - 推荐</h3>
-                    <!-- Mock Item 1: 橙汁 - 100% 鲜榨 -->
-                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="juice-tea">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/F97316/FFFFFF?text=橙汁" alt="鲜榨橙汁" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">橙汁 - 100% 鲜榨 (1L)</p><p class="text-sm text-gray-500">原味无添加 / 单盒: RM 15.00</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-teal-700">RM 15.00</p></div>
+            
+                    <!-- Item 2: 可口可乐 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190717_edit_58401871015221.jpg')">
+                            <img src="picture/IMG_20251222_190717_edit_58401871015221.jpg" alt="可口可乐" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">可口可乐 (330ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">经典碳酸饮料</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 2.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 55.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 105.00</b>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Mock Item 2: 冰红茶 -->
-                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="juice-tea">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/EF4444/FFFFFF?text=红茶" alt="冰红茶" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">冰红茶 (500ml)</p><p class="text-sm text-gray-500">经典柠檬味 / 单瓶: RM 3.50</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-teal-700">RM 3.50</p></div>
+            
+                    <!-- Item 3: 百事可乐 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190733_edit_58421699210890.jpg')">
+                            <img src="picture/IMG_20251222_190733_edit_58421699210890.jpg" alt="百事可乐" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">百事可乐 (330ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">经典蓝色可乐</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 2.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 55.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 105.00</b>
+                                </div>
+                            </div>
                         </div>
                     </div>
+            
+                    <!-- Item 4: 雪碧 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190750_edit_58431561772918.jpg')">
+                            <img src="picture/IMG_20251222_190750_edit_58431561772918.jpg" alt="雪碧" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">雪碧 (330ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">柠檬味汽水</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 2.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 55.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 105.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 5: 芬达橙汁 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190801_edit_58446082955881.jpg')">
+                            <img src="picture/IMG_20251222_190801_edit_58446082955881.jpg" alt="芬达橙汁" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">芬达橙汁 (330ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">橙子味汽水</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 2.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 55.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 105.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 6: 绿茶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190812_edit_58455640073742.jpg')">
+                            <img src="picture/IMG_20251222_190812_edit_58455640073742.jpg" alt="绿茶" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">绿茶 (500ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">无糖健康饮料</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一瓶<br>
+                                    <b class="text-teal-700">RM 3.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24瓶）<br>
+                                    <b class="text-teal-700">RM 65.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48瓶）<br>
+                                    <b class="text-teal-700">RM 125.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 7: 红茶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190822_edit_58466517711290.jpg')">
+                            <img src="picture/IMG_20251222_190822_edit_58466517711290.jpg" alt="红茶" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">红茶 (500ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">经典茶饮</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一瓶<br>
+                                    <b class="text-teal-700">RM 3.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24瓶）<br>
+                                    <b class="text-teal-700">RM 65.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48瓶）<br>
+                                    <b class="text-teal-700">RM 125.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 8: 柠檬茶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190833_edit_58475965672640.jpg')">
+                            <img src="picture/IMG_20251222_190833_edit_58475965672640.jpg" alt="柠檬茶" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">柠檬茶 (500ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">清爽柠檬风味</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一瓶<br>
+                                    <b class="text-teal-700">RM 3.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24瓶）<br>
+                                    <b class="text-teal-700">RM 75.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48瓶）<br>
+                                    <b class="text-teal-700">RM 145.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 9: 100Plus -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190845_edit_58484977617168.jpg')">
+                            <img src="picture/IMG_20251222_190845_edit_58484977617168.jpg" alt="100Plus" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">100Plus (325ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">运动等渗饮料</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 2.80</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 62.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 120.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 10: 红牛 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190853_edit_58496718731435.jpg')">
+                            <img src="picture/IMG_20251222_190853_edit_58496718731435.jpg" alt="红牛" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">红牛 (250ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">能量饮料</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 5.50</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 125.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 240.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 11: 椰子水 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190905_edit_58505648864921.jpg')">
+                            <img src="picture/IMG_20251222_190905_edit_58505648864921.jpg" alt="椰子水" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">椰子水 (330ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">天然椰青水</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一罐<br>
+                                    <b class="text-teal-700">RM 4.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24罐）<br>
+                                    <b class="text-teal-700">RM 88.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48罐）<br>
+                                    <b class="text-teal-700">RM 170.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 12: 菊花茶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190923_edit_58523959719758.jpg')">
+                            <img src="picture/IMG_20251222_190923_edit_58523959719758.jpg" alt="菊花茶" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">菊花茶 (500ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">清凉降火茶饮</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一瓶<br>
+                                    <b class="text-teal-700">RM 3.20</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24瓶）<br>
+                                    <b class="text-teal-700">RM 70.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48瓶）<br>
+                                    <b class="text-teal-700">RM 135.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Item 13: 豆奶 -->
+                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm hover:shadow-md transition duration-300 ease-in-out item-card" data-main-category="drinks" data-sub-category="sodas">
+                        <div class="w-20 h-20 mr-4 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 border-teal-300" onclick="openModal('picture/IMG_20251222_190936_edit_58542596654490.jpg')">
+                            <img src="picture/IMG_20251222_190936_edit_58542596654490.jpg" alt="豆奶" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xl font-semibold text-gray-800">豆奶 (300ml)</p>
+                            <p class="text-sm text-gray-500 mb-2">营养豆制品饮料</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+                                <div class="bg-white rounded px-2 py-1">
+                                    一盒<br>
+                                    <b class="text-teal-700">RM 2.20</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一托（24盒）<br>
+                                    <b class="text-teal-700">RM 48.00</b>
+                                </div>
+                                <div class="bg-white rounded px-2 py-1">
+                                    一箱（48盒）<br>
+                                    <b class="text-teal-700">RM 92.00</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
                 </div>
-
-                <!-- 喝的 - 水及牛奶子内容 (默认隐藏) -->
-                <div id="water-milk-sub" class="sub-category-content hidden space-y-4 pb-6">
-                    <h3 class="text-2xl font-semibold text-teal-700">水及牛奶 (Water & Milk) - 推荐</h3>
-                    <!-- Mock Item 1: 矿泉水 -->
-                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="water-milk">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/D1D5DB/1F2937?text=矿泉水" alt="矿泉水" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">矿泉水 (550ml)</p><p class="text-sm text-gray-500">天然山泉水 / 单瓶: RM 2.00</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-teal-700">RM 2.00</p></div>
-                        </div>
-                    </div>
-                    <!-- Mock Item 2: 纯牛奶 -->
-                    <div class="flex items-center p-4 bg-teal-50 rounded-lg shadow-sm item-card" data-main-category="drinks" data-sub-category="water-milk">
-                        <div class="w-20 h-20 mr-4 flex-shrink-0 rounded-md border-2 border-teal-300 overflow-hidden"><img src="picture/FBBF24/1F2937?text=牛奶" alt="纯牛奶" class="w-full h-full object-cover"></div>
-                        <div class="flex-grow flex justify-between items-center">
-                            <div><p class="text-xl font-semibold text-gray-800">纯牛奶 (250ml)</p><p class="text-sm text-gray-500">高钙原味 / 单盒: RM 3.50</p></div>
-                            <div class="text-right"><p class="text-lg font-bold text-teal-700">RM 3.50</p></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <!-- 类别区块容器：用的 (Goods) -->
@@ -914,6 +1165,7 @@
     </div>
 
     <script>
+		
         // 全局元素引用
         const modal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
